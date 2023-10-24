@@ -1,9 +1,9 @@
 # Título da API
 
 API criada para um sistema de hotelaria para gerenciamento de quartos/acomodações e reservas, usando o padrão RESTful
-# Foi uitilizado o Swagger para a domuntação utilizando o padrão OpenApi.
-# Utilizei um comando para salvar na pasta api-documentation em um arquivo chamado swagger.json
-# Depopis é exibido na index que esta na mesma pasta.
+- Foi uitilizado o Swagger para a domuntação utilizando o padrão OpenApi.
+- Utilizei um comando para salvar na pasta api-documentation em um arquivo chamado swagger.json
+- Depopis é exibido na index que esta na mesma pasta.
 
 ![image](https://github.com/JohnGdev/desafio_foco_api/assets/106494649/a17c1212-ec30-4b96-b718-268ab8e80e33)
 
