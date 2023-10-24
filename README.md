@@ -172,7 +172,7 @@ Tabela Guests
         Schema::dropIfExists('guests');
     }
 ````
-existem algumas outras migrations que fora para ajuste durante o desenvolvimento 
+existem algumas outras migrations que foram para ajustes durante o desenvolvimento 
 para rodar as migrations foi utilizado o comado:
 
 ```bash
