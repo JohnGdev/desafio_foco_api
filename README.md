@@ -1,6 +1,6 @@
 
 
-# A API foi criada para um sistema de hotelaria, destinado ao gerenciamento de quartos/acomodações e reservas, utilizando o padrão RESTful.
+# A API foi criada para um sistema de hotelaria, destinado ao gerenciamento de quartos/acomodações e reservas, utilizando o padrão REST.
 - Foi uitilizado o Swagger para a domuntação utilizando o padrão OpenApi.
 - Utilizei um comando para salvar na pasta api-documentation em um arquivo chamado swagger.json
 - Depopis é exibido na index que está na mesma pasta.
