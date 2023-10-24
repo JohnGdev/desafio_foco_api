@@ -172,4 +172,160 @@ Tabela Guests
         Schema::dropIfExists('guests');
     }
 ````
+existem algumas outras migrations que fora para ajuste durante o desenvolvimento 
+para rodar as migrations foi utilizado o comado:
 
+```bash
+php artisan migrate 
+````
+
+Em alguns models foram implentado algumas regras exemplo:
+```bash
+class Reserve extends Model
+{
+    protected $fillable = ['hotel_id', 'room_id', 'checkIn', 'checkOut', 'total'];
+
+    static public $rules = [
+        'hotel_id'=> 'required|exists:App\Models\Hotel,id',
+        'room_id'=> 'required|int',
+        'checkIn'=> 'required|date',
+        'checkOut'=> 'date|after:checkIn'
+    ];
+
+
+````
+
+
+Nos controllers foram implementados os metodos da api listarei alguns tabem foi craido uma documentação no swagger http://127.0.0.1:8000/api-documentation#/ :
+
+```bash
+public function list()
+    {
+        $rooms = Room::all();
+        return $rooms->toJson();
+    }
+
+
+
+public function create(Request $request)
+    {
+        $request->validate(Room::$rules);
+
+        $room = Room::create($request->all());
+        return $room->toJson();
+    }
+
+
+    public function getById($id)
+    {
+        $room = Room::find($id);
+        if (!$room) {
+            return response()->json(['message' => 'Room not found'], 404);
+        }
+        return $room->toJson();
+    }
+
+
+ public function edit(Request $request, $id)
+    {
+        $room = Room::find($id);
+
+        if (!$room) {
+            return response()->json(['message' => 'Room not found'], 404);
+        }
+
+        $room->name = is_null($request->name) ? $room->name : $request->name;
+        $room->hotel_id = is_null($request->hotel_id) ? $room->hotel_id : $request->hotel_id;
+
+        $room->save();
+
+        return $room->toJson();
+    }
+
+
+     public function destroy($id)
+    {
+        $room = Room::find($id);
+        if (!$room) {
+            return response()->json(['message' => 'Room not found'], 404);
+        }
+
+        if ($room->reserves()->exists()) {
+            return response()->json(['message' => 'Cannot delete the room as it is associated with reservations:'], 400);
+        }
+
+        $room->hotel()->dissociate();
+
+        $room->delete();
+
+        return response()->json(['message' => 'Room deleted successfully']);
+    }
+
+
+````
+
+As rotas foram criadas no arquivo api.php :
+
+O padrão é consistente e segue as melhores práticas para definir rotas no Laravel, tornando a API clara e fácil de entender. Cada rota corresponde a uma ação específica em um controlador.
+
+```bash
+// Rooms
+
+Route::get('/rooms', 'App\Http\Controllers\RoomController@list');
+Route::post('/rooms', 'App\Http\Controllers\RoomController@create');
+Route::get('/rooms/{id}', 'App\Http\Controllers\RoomController@getById');
+Route::patch('/rooms/{id}', 'App\Http\Controllers\RoomController@edit');
+Route::delete('/rooms/{id}', 'App\Http\Controllers\RoomController@destroy');
+
+// Reserves
+
+Route::get('/reserves', 'App\Http\Controllers\ReserveController@list');
+Route::post('/reserves', 'App\Http\Controllers\ReserveController@createReserve');
+Route::post('/reserves/{reserveId}/dailies', 'App\Http\Controllers\ReserveController@addDailies');
+Route::post('/reserves/{reserveId}/payments', 'App\Http\Controllers\ReserveController@addPayments');
+
+````
+
+A impotação dos arquivos xmls se dão atraves de um comando que foi criado na pasta Comands:
+```bash
+
+class ImportXmls extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'app:import-xmls';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Import the XMLs file to update the database';
+
+    /**
+     * Execute the console command.
+     */
+    public function handle()
+    {
+        try {
+            DB::beginTransaction();
+
+            $controller = new XmlImportController();
+
+            $controller->importHotels();
+            $controller->importRooms();
+            $controller->importReserves();
+
+            echo 'Importação concluída';
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            echo 'Ocorreu um erro durante a importação';
+            echo $th->getMessage();
+        }
+    }
+}
+````
