@@ -196,7 +196,7 @@ class Reserve extends Model
 ````
 
 
-Nos controllers foram implementados os metodos da api listarei alguns tabem foi craido uma documentação no swagger http://127.0.0.1:8000/api-documentation#/ :
+Nos controllers foram implementados os metodos da api listarei alguns também foi craido uma documentação no swagger http://127.0.0.1:8000/api-documentation#/ :
 
 ```bash
 public function list()
