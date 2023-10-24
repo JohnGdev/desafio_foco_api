@@ -294,6 +294,10 @@ Route::post('/reserves/{reserveId}/payments', 'App\Http\Controllers\ReserveContr
 A impotação dos arquivos xmls se dão atraves de um comando que foi criado na pasta Comands:
 ```bash
 
+php artisan app:import-xmls 
+````
+```bash
+
 class ImportXmls extends Command
 {
     /**
