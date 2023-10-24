@@ -5,7 +5,8 @@
 - Utilizei um comando para salvar na pasta api-documentation em um arquivo chamado swagger.json
 - Depopis é exibido na index que está na mesma pasta.
 
-![image](https://github.com/JohnGdev/desafio_foco_api/assets/106494649/a17c1212-ec30-4b96-b718-268ab8e80e33)
+![image](https://github.com/JohnGdev/desafio_foco_api/assets/106494649/d22f8889-974b-491b-8523-6b9df32549ce)
+
 
 ## Requisitos
 
